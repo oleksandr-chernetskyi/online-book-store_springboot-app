@@ -7,7 +7,7 @@ import springboot.onlinebookstore.model.Book;
 public interface BookRepository {
     Book save(Book book);
 
-    List<Book> findAll();
+    List<Book> getAll();
 
     Optional<Book> findById(Long id);
 }
