@@ -11,16 +11,12 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "books")
-@SQLDelete(sql = "Update books SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted = false")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +31,6 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
-
-    @Column(nullable = false)
-    private boolean isDeleted = false;
 
     @Override
     public boolean equals(Object o) {
@@ -54,6 +47,6 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, author, isbn,
-                price, description, coverImage, isDeleted);
+                price, description, coverImage);
     }
 }
