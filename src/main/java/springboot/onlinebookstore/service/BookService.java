@@ -9,7 +9,7 @@ import springboot.onlinebookstore.dto.CreateBookRequestDto;
 public interface BookService {
     BookDto save(CreateBookRequestDto requestDto);
 
-    List<BookDto> findAll();
+    List<BookDto> findAll(Pageable pageable);
 
     BookDto findById(Long id);
 
