@@ -9,11 +9,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = IsbnValidator.class)
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Constraint(validatedBy = EmailValidator.class)
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Isbn {
-    String message() default "ISBN must be unique";
+public @interface Email {
+    String message() default "Invalid email";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

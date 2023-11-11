@@ -1,4 +1,4 @@
-package springboot.onlinebookstore.dto;
+package springboot.onlinebookstore.dto.book;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

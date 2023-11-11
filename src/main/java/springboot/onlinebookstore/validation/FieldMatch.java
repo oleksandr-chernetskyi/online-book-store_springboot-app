@@ -9,11 +9,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = IsbnValidator.class)
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Constraint(validatedBy = FieldMatchValidator.class)
+@Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Isbn {
-    String message() default "ISBN must be unique";
+public @interface FieldMatch {
+    String message() default "Fields values don't match!";
+
+    String field();
+
+    String fieldMatch();
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

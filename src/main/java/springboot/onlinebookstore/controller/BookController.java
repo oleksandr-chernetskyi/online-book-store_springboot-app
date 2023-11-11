@@ -8,6 +8,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import springboot.onlinebookstore.dto.BookDto;
-import springboot.onlinebookstore.dto.CreateBookRequestDto;
+import springboot.onlinebookstore.dto.book.BookDto;
+import springboot.onlinebookstore.dto.book.CreateBookRequestDto;
 import springboot.onlinebookstore.service.BookService;
 
 @RestController
@@ -29,6 +30,7 @@ import springboot.onlinebookstore.service.BookService;
 public class BookController {
     private final BookService bookService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
@@ -50,6 +52,7 @@ public class BookController {
         return bookService.findById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Update book",
             description = "Search and Update existing book by id")
@@ -57,6 +60,7 @@ public class BookController {
         return bookService.update(bookDto, id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete book by id",

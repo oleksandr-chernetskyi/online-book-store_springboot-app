@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books-into-books-table
+      author: onlinebookstore
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column: {name: title, value: "Captain Blood"}
+              - column: {name: author, value: "Rafael Sabatini"}
+              - column: {name: isbn, value: "9785877881402"}
+              - column: {name: price, value: "140"}
+              - column: {name: description, value: "17th-century pirate battles and adventures."}
+              - column: {name: cover_image, value:
+                "https://en.wikipedia.org/wiki/Captain_Blood_%28novel%29#/media/File:1922-captainblood-cover.jpg"}
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "The Count of Monte Cristo" }
+              - column: { name: author, value: "Alexandre Dumas" }
+              - column: { name: isbn, value: "9783748571667" }
+              - column: { name: price, value: "160" }
+              - column: { name: description, value: "Revenge, betrayal, and hidden treasure." }
+              - column: { name: cover_image, value:
+                "https://ru.wikipedia.org/wiki/%D0%93%D1%80%D0%B0%D1%84_%D0%9C%D0%BE%D0%BD%D1%82%D0%B5-%D0%9A%D1%80%D0%B8%D1%81%D1%82%D0%BE#/media/%D0%A4%D0%B0%D0%B9%D0%BB:Louis_Fran%C3%A7ais-Dant%C3%A8s_sur_son_rocher.jpg" }
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "Quentin Durward" }
+              - column: { name: author, value: "Sir Walter Scott" }
+              - column: { name: isbn, value: "9782363074249" }
+              - column: { name: price, value: "150" }
+              - column: { name: description, value: "Chivalry and adventure in medieval France." }
+              - column: { name: cover_image, value:
+                "https://en.wikipedia.org/wiki/Quentin_Durward#/media/File:Quentin_Durward_1823.jpg" }

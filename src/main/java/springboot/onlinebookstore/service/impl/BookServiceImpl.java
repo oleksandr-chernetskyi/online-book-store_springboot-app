@@ -1,4 +1,4 @@
-package springboot.onlinebookstore.service;
+package springboot.onlinebookstore.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -7,14 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import springboot.onlinebookstore.dto.BookDto;
-import springboot.onlinebookstore.dto.CreateBookRequestDto;
+import springboot.onlinebookstore.dto.book.BookDto;
+import springboot.onlinebookstore.dto.book.CreateBookRequestDto;
 import springboot.onlinebookstore.exception.EntityNotFoundException;
 import springboot.onlinebookstore.exception.IllegalSpecificationArgumentException;
 import springboot.onlinebookstore.mapper.BookMapper;
 import springboot.onlinebookstore.model.Book;
 import springboot.onlinebookstore.repository.SpecificationManager;
 import springboot.onlinebookstore.repository.book.BookRepository;
+import springboot.onlinebookstore.service.BookService;
 
 @Service
 @RequiredArgsConstructor
