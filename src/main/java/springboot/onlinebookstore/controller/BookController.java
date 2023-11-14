@@ -6,9 +6,12 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,7 @@ import springboot.onlinebookstore.dto.book.BookDto;
 import springboot.onlinebookstore.dto.book.CreateBookRequestDto;
 import springboot.onlinebookstore.service.BookService;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "api/books")
@@ -30,11 +34,17 @@ import springboot.onlinebookstore.service.BookService;
 public class BookController {
     private final BookService bookService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    private String getLoggedInUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (authentication != null) ? authentication.getName() : "User unknown";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
+        log.info("User {} is created a new book: {}", getLoggedInUserName(), requestDto.getTitle());
         return bookService.save(requestDto);
     }
 
@@ -52,20 +62,23 @@ public class BookController {
         return bookService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Update book",
             description = "Search and Update existing book by id")
     public BookDto update(@PathVariable Long id, @RequestBody BookDto bookDto) {
+        log.info("User {} is updating book with Id {}: {}", getLoggedInUserName(),
+                id, bookDto.getTitle());
         return bookService.update(bookDto, id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete book by id",
             description = "Search and Delete existing book by id")
     public void delete(@PathVariable Long id) {
+        log.info("User is deleting book with Id {}: {}", getLoggedInUserName(), id);
         bookService.deleteById(id);
     }
 

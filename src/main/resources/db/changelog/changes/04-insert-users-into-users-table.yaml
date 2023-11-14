@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column: {name: email, value: "sanchez@gmail.com"}
-              - column: {name: password, value: "$2a$12$t5GV/bL.PwUzKU/KZCvDNeqQ/0UYPtZXkugTKUp1YlA8I0Wk5dsw2"}
+              - column: {name: password, value: "$2a$12$wZTYVMhTdP1HTEs3L2WkF.r3VLYAOA0Ojp0Ru/g.OXkGI7/UBDnbW"}
               - column: {name: first_name, value: "Rick"}
               - column: {name: last_name, value: "Sanchez"}
               - column: {name: shipping_address, value: "Smith family garage"}
@@ -15,7 +15,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column: { name: email, value: "morty@gmail.com" }
-              - column: { name: password, value: "$2a$12$IzRm4qCdeQKKD8lctJY1Ket476ZgNAmbrhkB95XBmg2U6vBDi74cC" }
+              - column: { name: password, value: "$2a$12$2fu209mPECoJIjTOwRvhce6jg/y8NKGhJ/0kkU40bZMDIEGykzpX2" }
               - column: { name: first_name, value: "Morty" }
               - column: { name: last_name, value: "Smith" }
               - column: { name: shipping_address, value: "Smith family home" }
@@ -23,7 +23,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column: { name: email, value: "summer@gmail.com" }
-              - column: { name: password, value: "$2a$12$pljvn4tCgkdlcBJCqXH0fOQ8lT3LVwrBST0mqDyLl5EYJaaK/66ie" }
+              - column: { name: password, value: "$2a$12$.ZmgfIpkBx8IxHY0ZeIlzO4tF8TQIJVORQF4jIGCipTzpfYgH1P7K" }
               - column: { name: first_name, value: "Summer" }
               - column: { name: last_name, value: "Smith" }
               - column: { name: shipping_address, value: "Smith family home" }

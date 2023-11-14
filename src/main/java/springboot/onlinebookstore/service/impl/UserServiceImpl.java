@@ -3,8 +3,7 @@ package springboot.onlinebookstore.service.impl;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +19,10 @@ import springboot.onlinebookstore.repository.role.RoleRepository;
 import springboot.onlinebookstore.repository.user.UserRepository;
 import springboot.onlinebookstore.service.UserService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +32,9 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto register(UserRegistrationRequestDto registrationRequest)
             throws RegistrationException {
         if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
+            log.error("Register method failed. "
+                            + "Unable to registration with current parameters: {}",
+                    registrationRequest.getEmail());
             throw new RegistrationException("Unable to complete registration");
         }
         User user = new User();
@@ -44,7 +46,8 @@ public class UserServiceImpl implements UserService {
 
         Role userRole = roleRepository.findRoleByRoleName(Role.RoleName.USER)
                 .orElseThrow(() -> {
-                    logger.error("Can't find role by user for registration request: {}",
+                    log.error("Register method failed. "
+                                    + "Can't find role by user for registration request: {}",
                             registrationRequest);
                     return new RegistrationException("Can't find role by user");
                 });
@@ -58,8 +61,11 @@ public class UserServiceImpl implements UserService {
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmail(authentication.getName())
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Can't find user by email: "
-                                + authentication.getName()));
+                .orElseThrow(() -> {
+                    log.error("GetAuthenticatedUser method failed. "
+                            + "Can't find user by email: {}", authentication.getName());
+                    return new EntityNotFoundException("Can't find user by email: "
+                            + authentication.getName());
+                });
     }
 }

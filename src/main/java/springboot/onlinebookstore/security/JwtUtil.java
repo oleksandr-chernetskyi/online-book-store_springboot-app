@@ -10,14 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtUtil {
-    private static final Logger logger = LogManager.getLogger(JwtUtil.class);
     private final Key secret;
 
     @Value("${jwt.expiration}")
@@ -28,13 +27,11 @@ public class JwtUtil {
     }
 
     public String generateToken(String username) {
-        Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + expiration);
-        logger.info("Start generating JWT token for user: '{}'", username);
+        log.info("Start generating JWT token for user: '{}'", username);
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(expirationDate)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(secret, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -47,7 +44,7 @@ public class JwtUtil {
                     .parseClaimsJws(token);
             return !claimsJwc.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            logger.error("Expired or invalid JWT token: {}", e.getMessage());
+            log.error("Expired or invalid JWT token: {}", e.getMessage());
             throw new JwtException("Expired or invalid JWT token");
         }
     }

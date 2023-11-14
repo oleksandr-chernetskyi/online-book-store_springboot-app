@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import springboot.onlinebookstore.repository.SpecificationManager;
 import springboot.onlinebookstore.repository.book.BookRepository;
 import springboot.onlinebookstore.service.BookService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
@@ -31,6 +33,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> findAll(Pageable pageable) {
+        log.info("Starting process to find all books...");
         return bookRepository.findAll(pageable)
                 .stream()
                 .map(bookMapper::toDto)
@@ -39,16 +42,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto findById(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find book by id: " + id));
-        return bookMapper.toDto(book);
+        return bookMapper.toDto(bookRepository.findById(id).orElseThrow(
+                () -> {
+                    log.error("FindById method failed. Can't find book by id: {}", id);
+                    return new EntityNotFoundException("Can't find book by id: " + id);
+                }));
     }
 
     @Override
     public BookDto update(BookDto bookDto, Long id) {
-        Book updatedBook = bookRepository.findById(id)
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Can't find book by id: " + id));
+        Book updatedBook = bookRepository.findById(id).orElseThrow(() -> {
+            log.error("Update method failed. Can't update book by id: {}", id);
+            return new EntityNotFoundException("Can't update book by id: " + id);
+        });
         updatedBook.setTitle(bookDto.getTitle());
         updatedBook.setAuthor(bookDto.getAuthor());
         updatedBook.setIsbn(bookDto.getIsbn());
@@ -60,6 +66,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long id) {
+        log.info("Starting process to delete book by id: {}", id);
         bookRepository.deleteById(id);
     }
 
@@ -73,6 +80,8 @@ public class BookServiceImpl implements BookService {
                     ? Specification.where(spec) : specification.and(spec);
         }
         if (specification == null) {
+            log.error("FindAllByParams method failed. "
+                    + "invalid combination of filterKey and value: {}", parameters);
             throw new IllegalSpecificationArgumentException(
                     "Invalid combination of filterKey and value");
         }
