@@ -39,7 +39,7 @@ public class BookController {
         return (authentication != null) ? authentication.getName() : "User unknown";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
@@ -62,7 +62,7 @@ public class BookController {
         return bookService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Update book",
             description = "Search and Update existing book by id")
@@ -72,7 +72,7 @@ public class BookController {
         return bookService.update(bookDto, id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete book by id",

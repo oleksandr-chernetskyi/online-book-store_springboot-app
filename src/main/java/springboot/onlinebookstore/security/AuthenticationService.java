@@ -1,11 +1,11 @@
 package springboot.onlinebookstore.security;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import springboot.onlinebookstore.dto.user.UserLoginRequestDto;
 import springboot.onlinebookstore.dto.user.UserLoginResponseDto;
@@ -17,13 +17,15 @@ import springboot.onlinebookstore.exception.AuthenticationException;
 public class AuthenticationService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
 
     public UserLoginResponseDto authenticate(UserLoginRequestDto requestDto) {
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestDto.getEmail(),
                         requestDto.getPassword())
         );
+        List<String> roles = authentication.getAuthorities().stream()
+                .map(Object::toString)
+                .toList();
         String token = jwtUtil.generateToken(authentication.getName());
         if (token == null || token.isEmpty()) {
             log.error("Token generation failed for user: {}", requestDto.getEmail());

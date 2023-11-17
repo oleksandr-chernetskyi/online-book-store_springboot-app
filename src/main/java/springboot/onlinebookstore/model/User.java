@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @Column(name = "shipping_address")
     private String shippingAddress;
     @ToString.Exclude
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -54,7 +54,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(r -> new SimpleGrantedAuthority(
-                        r.getRoleName().name()))
+                        "ROLE_" + r.getRoleName().name()))
                 .toList();
     }
 

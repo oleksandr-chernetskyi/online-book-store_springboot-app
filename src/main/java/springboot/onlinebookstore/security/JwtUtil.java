@@ -20,16 +20,16 @@ public class JwtUtil {
     private final Key secret;
 
     @Value("${jwt.expiration}")
-    private long expiration;
+    private Long expiration;
 
     public JwtUtil(@Value("${jwt.secret}") String secretString) {
         secret = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String username) {
-        log.info("Start generating JWT token for user: '{}'", username);
+    public String generateToken(String email) {
+        log.info("Start generating JWT token for user: '{}'", email);
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(secret, SignatureAlgorithm.HS256)
@@ -49,7 +49,7 @@ public class JwtUtil {
         }
     }
 
-    public String getUserName(String token) {
+    public String getUserEmail(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 

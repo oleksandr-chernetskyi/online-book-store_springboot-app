@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(registrationRequest.getLastName());
         user.setShippingAddress(registrationRequest.getShippingAddress());
 
-        Role userRole = roleRepository.findRoleByRoleName(Role.RoleName.USER)
+        Role userRole = roleRepository.findRoleByRoleName(Role.RoleName.ROLE_USER)
                 .orElseThrow(() -> {
                     log.error("Register method failed. "
                                     + "Can't find role by user for registration request: {}",
