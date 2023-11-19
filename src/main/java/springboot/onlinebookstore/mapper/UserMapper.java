@@ -8,7 +8,7 @@ import springboot.onlinebookstore.model.User;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
-    UserResponseDto toUserResponse(User user);
+    UserResponseDto toDto(User user);
 
     User toModel(UserRegistrationRequestDto userRegistrationRequestDto);
 }

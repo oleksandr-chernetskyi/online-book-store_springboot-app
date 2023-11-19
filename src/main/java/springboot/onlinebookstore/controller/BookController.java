@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import springboot.onlinebookstore.dto.book.BookDto;
+import springboot.onlinebookstore.dto.book.BookResponseDto;
 import springboot.onlinebookstore.dto.book.CreateBookRequestDto;
 import springboot.onlinebookstore.service.BookService;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "api/books")
+@RequestMapping(value = "/books")
 @Tag(name = "Book management", description = "Endpoints for managing books")
 public class BookController {
     private final BookService bookService;
@@ -39,11 +39,11 @@ public class BookController {
         return (authentication != null) ? authentication.getName() : "User unknown";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
-    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
+    public BookResponseDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
         log.info("User {} is created a new book: {}", getLoggedInUserName(), requestDto.getTitle());
         return bookService.save(requestDto);
     }
@@ -51,28 +51,29 @@ public class BookController {
     @GetMapping
     @Operation(summary = "Get all books",
             description = "Get a list of all available books")
-    public List<BookDto> findAll(Pageable pageable) {
+    public List<BookResponseDto> findAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get book by id",
             description = "Get existing book by id")
-    public BookDto findById(@PathVariable Long id) {
+    public BookResponseDto findById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Update book",
             description = "Search and Update existing book by id")
-    public BookDto update(@PathVariable Long id, @RequestBody BookDto bookDto) {
+    public BookResponseDto update(@PathVariable Long id,
+            @RequestBody @Valid CreateBookRequestDto createBookRequestDto) {
         log.info("User {} is updating book with Id {}: {}", getLoggedInUserName(),
-                id, bookDto.getTitle());
-        return bookService.update(bookDto, id);
+                id, createBookRequestDto.getTitle());
+        return bookService.update(id, createBookRequestDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete book by id",
@@ -85,7 +86,7 @@ public class BookController {
     @GetMapping("/search")
     @Operation(summary = "Book search",
             description = "Search for a book using specified parameters")
-    public List<BookDto> searchBooks(@RequestParam Map<String, String> parameters,
+    public List<BookResponseDto> searchBooks(@RequestParam Map<String, String> parameters,
             Pageable pageable) {
         return bookService.findAllByParams(parameters, pageable);
     }

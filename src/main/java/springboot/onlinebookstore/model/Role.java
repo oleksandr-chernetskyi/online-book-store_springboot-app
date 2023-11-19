@@ -23,14 +23,14 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "role_name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     @Enumerated(value = EnumType.STRING)
-    private RoleName roleName;
+    private RoleName name;
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     public enum RoleName {
-        ROLE_USER,
-        ROLE_ADMIN
+        USER,
+        ADMIN
     }
 }

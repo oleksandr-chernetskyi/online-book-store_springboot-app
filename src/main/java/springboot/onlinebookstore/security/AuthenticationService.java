@@ -1,6 +1,5 @@
 package springboot.onlinebookstore.security;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +22,6 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(requestDto.getEmail(),
                         requestDto.getPassword())
         );
-        List<String> roles = authentication.getAuthorities().stream()
-                .map(Object::toString)
-                .toList();
         String token = jwtUtil.generateToken(authentication.getName());
         if (token == null || token.isEmpty()) {
             log.error("Token generation failed for user: {}", requestDto.getEmail());

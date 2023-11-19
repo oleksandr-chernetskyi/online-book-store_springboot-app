@@ -10,6 +10,7 @@ import springboot.onlinebookstore.validation.FieldMatch;
 @FieldMatch(field = "password", fieldMatch = "repeatPassword")
 public class UserRegistrationRequestDto {
     @Email
+    @NotNull
     private String email;
     @NotNull
     @Size(min = 6, max = 30)
