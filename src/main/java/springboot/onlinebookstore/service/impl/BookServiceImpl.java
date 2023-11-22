@@ -9,10 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import springboot.onlinebookstore.dto.book.BookResponseDto;
+import springboot.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import springboot.onlinebookstore.dto.book.CreateBookRequestDto;
 import springboot.onlinebookstore.exception.EntityNotFoundException;
 import springboot.onlinebookstore.exception.IllegalSpecificationArgumentException;
-import springboot.onlinebookstore.mapper.BookMapper;
+import springboot.onlinebookstore.mapper.book.BookMapper;
 import springboot.onlinebookstore.model.Book;
 import springboot.onlinebookstore.repository.SpecificationManager;
 import springboot.onlinebookstore.repository.book.BookRepository;
@@ -91,6 +92,15 @@ public class BookServiceImpl implements BookService {
         }
         return bookRepository.findAll(specification, pageable).stream()
                 .map(bookMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookWithoutCategoryIdsDto> findAllByCategoryId(Long categoryId,
+            Pageable pageable) {
+        return bookRepository.findAllByCategoriesId(categoryId, pageable)
+                .stream()
+                .map(bookMapper::toDtoWithoutCategories)
                 .collect(Collectors.toList());
     }
 }

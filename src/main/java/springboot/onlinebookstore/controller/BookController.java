@@ -30,7 +30,8 @@ import springboot.onlinebookstore.service.BookService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/books")
-@Tag(name = "Book management", description = "Endpoints for managing books")
+@Tag(name = "Book management",
+        description = "Endpoints for managing books")
 public class BookController {
     private final BookService bookService;
 
@@ -44,7 +45,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new book", description = "Create a new book")
     public BookResponseDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
-        log.info("User {} is created a new book: {}", getLoggedInUserName(), requestDto.getTitle());
+        log.info("User {} is created a new book: {}",
+                getLoggedInUserName(), requestDto.getTitle());
         return bookService.save(requestDto);
     }
 

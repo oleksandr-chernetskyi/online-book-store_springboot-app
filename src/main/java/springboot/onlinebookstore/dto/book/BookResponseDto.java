@@ -1,6 +1,7 @@
 package springboot.onlinebookstore.dto.book;
 
 import java.math.BigDecimal;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -18,4 +19,5 @@ public class BookResponseDto {
     private String description;
 
     private String coverImage;
+    private Set<Long> categoryIds;
 }

@@ -12,7 +12,7 @@ import springboot.onlinebookstore.dto.user.UserRegistrationRequestDto;
 import springboot.onlinebookstore.dto.user.UserResponseDto;
 import springboot.onlinebookstore.exception.EntityNotFoundException;
 import springboot.onlinebookstore.exception.RegistrationException;
-import springboot.onlinebookstore.mapper.UserMapper;
+import springboot.onlinebookstore.mapper.user.UserMapper;
 import springboot.onlinebookstore.model.Role;
 import springboot.onlinebookstore.model.User;
 import springboot.onlinebookstore.repository.role.RoleRepository;

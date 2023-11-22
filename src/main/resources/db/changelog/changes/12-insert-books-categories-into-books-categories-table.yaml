@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books-categories-into-books-categories-table
+      author: onlinebookstore
+      changes:
+        - insert:
+            tableName: books_categories
+            columns:
+              - column: { name: "category_id", value: "1" }
+              - column: { name: "book_id", value: "1" }
+        - insert:
+            tableName: books_categories
+            columns:
+              - column: { name: "category_id", value: "2" }
+              - column: { name: "book_id", value: "2" }
+        - insert:
+            tableName: books_categories
+            columns:
+              - column: { name: "category_id", value: "1" }
+              - column: { name: "book_id", value: "3" }

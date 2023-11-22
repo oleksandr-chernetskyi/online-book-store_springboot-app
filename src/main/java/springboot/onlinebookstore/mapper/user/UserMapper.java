@@ -1,4 +1,4 @@
-package springboot.onlinebookstore.mapper;
+package springboot.onlinebookstore.mapper.user;
 
 import org.mapstruct.Mapper;
 import springboot.onlinebookstore.config.MapperConfig;

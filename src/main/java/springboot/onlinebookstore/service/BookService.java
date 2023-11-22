@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Pageable;
 import springboot.onlinebookstore.dto.book.BookResponseDto;
+import springboot.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import springboot.onlinebookstore.dto.book.CreateBookRequestDto;
 
 public interface BookService {
@@ -17,5 +18,9 @@ public interface BookService {
 
     void deleteById(Long id);
 
-    List<BookResponseDto> findAllByParams(Map<String, String> parameters, Pageable pageable);
+    List<BookResponseDto> findAllByParams(Map<String, String> parameters,
+            Pageable pageable);
+
+    List<BookWithoutCategoryIdsDto> findAllByCategoryId(Long categoryId,
+            Pageable pageable);
 }
