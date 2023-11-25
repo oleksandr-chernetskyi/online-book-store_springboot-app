@@ -3,7 +3,6 @@ package springboot.onlinebookstore.dto.book;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Set;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import springboot.onlinebookstore.validation.Isbn;
@@ -25,6 +24,4 @@ public class CreateBookRequestDto {
     private String description;
 
     private String coverImage;
-    @NotNull
-    private Set<Long> categoryIds;
 }
