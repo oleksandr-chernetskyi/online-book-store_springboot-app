@@ -29,60 +29,66 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             HttpStatusCode status,
             WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.BAD_REQUEST);
-
         List<String> errors = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
                 .map(this::getErrorsMessage)
                 .toList();
-        body.put(ERRORS, errors);
-        return new ResponseEntity<>(body, headers, status);
+        return handleExceptionInternal(ex, getBody(HttpStatus.BAD_REQUEST, errors.toString()),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(value = EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundException(
             EntityNotFoundException ex,
-            HttpHeaders headers,
-            HttpStatus status
+            WebRequest request
     ) {
-        return handleException(ex, headers, status);
+        return handleExceptionInternal(ex, getBody(HttpStatus.NOT_FOUND, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
-    @ExceptionHandler(KeyNotSupportException.class)
+    @ExceptionHandler(value = KeyNotSupportException.class)
     protected ResponseEntity<Object> handleKeyNotSupportedException(
             KeyNotSupportException ex,
-            HttpHeaders headers,
-            HttpStatus status
+            WebRequest request
     ) {
-        return handleException(ex, headers, status);
+        return handleExceptionInternal(ex, getBody(HttpStatus.BAD_REQUEST,
+                ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler(IllegalSpecificationArgumentException.class)
+    @ExceptionHandler(value = IllegalSpecificationArgumentException.class)
     protected ResponseEntity<Object> handleIllegalSpecificationArgumentException(
             IllegalSpecificationArgumentException ex,
-            HttpHeaders headers,
-            HttpStatus status
+            WebRequest request
     ) {
-        return handleException(ex, headers, status);
+        return handleExceptionInternal(ex, getBody(HttpStatus.NOT_ACCEPTABLE,
+                ex.getMessage()), new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<Object> handleException(
-            RuntimeException ex,
-            HttpHeaders headers,
-            HttpStatus status
+    @ExceptionHandler(value = RegistrationException.class)
+    protected ResponseEntity<Object> handleRegistrationException(
+            RegistrationException ex,
+            WebRequest request
     ) {
+        return handleExceptionInternal(ex, getBody(HttpStatus.CONFLICT,
+                ex.getMessage()), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(
+            AuthenticationException ex,
+            WebRequest request
+    ) {
+        return handleExceptionInternal(ex, getBody(HttpStatus.UNAUTHORIZED,
+                ex.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+    }
+
+    private Map<String, Object> getBody(HttpStatus status, String message) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.BAD_REQUEST);
-
-        String error = ex.getMessage();
-        body.put(ERRORS, error);
-
-        return new ResponseEntity<>(body, headers, status);
+        body.put(STATUS, status);
+        body.put(ERRORS, message);
+        return body;
     }
 
     private String getErrorsMessage(ObjectError e) {

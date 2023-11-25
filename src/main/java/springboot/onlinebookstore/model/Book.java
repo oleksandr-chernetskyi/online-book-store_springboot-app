@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -17,7 +16,6 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "books")
 @SQLDelete(sql = "Update books SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
@@ -33,7 +31,9 @@ public class Book {
     private String isbn;
     @Column(nullable = false)
     private BigDecimal price;
+    @Column
     private String description;
+    @Column
     private String coverImage;
 
     @Column(nullable = false)

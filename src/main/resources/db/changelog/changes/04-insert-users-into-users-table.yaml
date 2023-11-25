@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-users-into-users-table
+      author: onlinebookstore
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: {name: email, value: "sanchez@gmail.com"}
+              - column: {name: password, value: "$2a$12$wZTYVMhTdP1HTEs3L2WkF.r3VLYAOA0Ojp0Ru/g.OXkGI7/UBDnbW"}
+              - column: {name: first_name, value: "Rick"}
+              - column: {name: last_name, value: "Sanchez"}
+              - column: {name: shipping_address, value: "Smith family garage"}
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "morty@gmail.com" }
+              - column: { name: password, value: "$2a$12$2fu209mPECoJIjTOwRvhce6jg/y8NKGhJ/0kkU40bZMDIEGykzpX2" }
+              - column: { name: first_name, value: "Morty" }
+              - column: { name: last_name, value: "Smith" }
+              - column: { name: shipping_address, value: "Smith family home" }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "summer@gmail.com" }
+              - column: { name: password, value: "$2a$12$.ZmgfIpkBx8IxHY0ZeIlzO4tF8TQIJVORQF4jIGCipTzpfYgH1P7K" }
+              - column: { name: first_name, value: "Summer" }
+              - column: { name: last_name, value: "Smith" }
+              - column: { name: shipping_address, value: "Smith family home" }

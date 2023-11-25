@@ -1,14 +1,16 @@
-package springboot.onlinebookstore.dto;
+package springboot.onlinebookstore.dto.book;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import springboot.onlinebookstore.validation.Isbn;
 
 @Data
 public class CreateBookRequestDto {
     @NotNull
+    @Length(min = 5, max = 255)
     private String title;
     @NotNull
     private String author;
