@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-categories-into0categories-table
+      author: onlinebookstore
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: "name", value: "Medieval adventures"}
+              - column: {name: "description", value: "Medieval adventures - 
+              encompasses thrilling tales set against the backdrop of medieval times."}
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: "name", value: "Historical Novel"}
+              - column: {name: "description", value: "Historical events about revenge, betrayal, and hidden treasures."}
