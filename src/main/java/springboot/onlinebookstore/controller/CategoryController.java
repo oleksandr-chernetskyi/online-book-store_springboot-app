@@ -52,7 +52,7 @@ public class CategoryController {
 
     @GetMapping
     @Operation(summary = "Get all categories", description = "Get all existing categories")
-    public List<CategoryResponseDto> finaAll(Pageable pageable) {
+    public List<CategoryResponseDto> findAll(Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 
