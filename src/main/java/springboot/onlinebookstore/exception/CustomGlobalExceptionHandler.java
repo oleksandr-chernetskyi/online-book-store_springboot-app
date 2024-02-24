@@ -83,6 +83,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 ex.getMessage()), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 
+    @ExceptionHandler(value = NoShoppingCartException.class)
+    protected ResponseEntity<Object> handleNoShoppingCartException(
+            NoShoppingCartException ex,
+            WebRequest request
+    ) {
+        return handleExceptionInternal(ex, getBody(HttpStatus.NOT_FOUND, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
     private Map<String, Object> getBody(HttpStatus status, String message) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(TIMESTAMP, LocalDateTime.now());
