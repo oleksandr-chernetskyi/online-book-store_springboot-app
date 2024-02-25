@@ -35,7 +35,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> {
                     log.error("getShoppingCart method failed. Can't find shopping cart: {}",
                             authenticatedUser.getId());
-                    return new NoShoppingCartException("Shopping cart not found for user");
+                    throw new NoShoppingCartException("Shopping cart not found for user");
                 });
         Long id = shoppingCart.getId();
         ShoppingCartResponseDto shoppingCartResponseDto = new ShoppingCartResponseDto();
