@@ -50,30 +50,11 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void setCartItemsAndShoppingCart(User user, CartItem cartItem) {
-        ShoppingCart shoppingCart = shoppingCartRepository
-                .getUserById(user.getId())
-                .orElseThrow(() -> {
-                    log.error("setCartItemsAndShoppingCart method failed. "
-                            + "Can't find cart item for user ID : {}", user.getId());
-                    return new NoSuchElementException("Cart item not found by user ID");
-                });
-        cartItem.setShoppingCart(shoppingCart);
-        Set<CartItem> cartItems = new HashSet<>();
-        cartItems.add(cartItem);
-        if (shoppingCart.getCartItems().isEmpty()) {
-            shoppingCart.setCartItems(cartItems);
-        } else {
-            shoppingCart.getCartItems().add(cartItem);
-        }
-    }
-
-    @Override
-    public CartItemResponseDto update(CountQuantityDto countQuantityDto, Long id) {
+    public CartItemResponseDto updateCartItem(CountQuantityDto countQuantityDto, Long id) {
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("Update method failed. Can't find cart item by ID: {}", id);
-                    return new EntityNotFoundException("Can't find cart item by ID");
+                    throw new EntityNotFoundException("Can't find cart item by ID");
                 });
         int newCountQuantity = countQuantityDto.getQuantity();
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
@@ -84,7 +65,25 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> {
                     log.error("Delete method failed. Can't find cart by ID: {}", cartItemId);
-                    return new EntityNotFoundException("Can't find cart by ID");
+                    throw new EntityNotFoundException("Can't find cart by ID");
                 });
+    }
+
+    private void setCartItemsAndShoppingCart(User user, CartItem cartItem) {
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .getUserById(user.getId())
+                .orElseThrow(() -> {
+                    log.error("setCartItemsAndShoppingCart method failed. "
+                            + "Can't find cart item for user ID : {}", user.getId());
+                    throw new NoSuchElementException("Cart item not found by user ID");
+                });
+        cartItem.setShoppingCart(shoppingCart);
+        Set<CartItem> cartItems = new HashSet<>();
+        cartItems.add(cartItem);
+        if (shoppingCart.getCartItems().isEmpty()) {
+            shoppingCart.setCartItems(cartItems);
+        } else {
+            shoppingCart.getCartItems().add(cartItem);
+        }
     }
 }

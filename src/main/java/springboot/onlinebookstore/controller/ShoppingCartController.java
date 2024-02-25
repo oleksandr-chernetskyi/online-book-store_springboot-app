@@ -31,22 +31,22 @@ public class ShoppingCartController {
 
     @PostMapping
     @Operation(summary = "Add new item to shopping cart")
-    public CartItemResponseDto cartItemResponseDto(@RequestBody @Valid
+    public CartItemResponseDto addItemToShoppingCart(@RequestBody @Valid
             CartItemRequestDto cartItemRequestDto) {
-        return shoppingCartService.save(cartItemRequestDto);
+        return shoppingCartService.addCartItem(cartItemRequestDto);
     }
 
     @GetMapping
     @Operation(summary = "Get shopping cart")
-    public ShoppingCartResponseDto shoppingCartResponseDto() {
+    public ShoppingCartResponseDto getShoppingCart() {
         return shoppingCartService.getShoppingCart();
     }
 
     @PutMapping("/cart-items/{id}")
     @Operation(summary = "Update cart item by ID")
-    public CartItemResponseDto update(@RequestBody @Valid
+    public CartItemResponseDto updateCartItem(@RequestBody @Valid
             CountQuantityDto countQuantityDto, @PathVariable Long id) {
-        return cartItemService.update(countQuantityDto, id);
+        return cartItemService.updateCartItem(countQuantityDto, id);
     }
 
     @DeleteMapping("/cart-items/{id}")

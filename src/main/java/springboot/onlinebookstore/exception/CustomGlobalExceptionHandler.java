@@ -92,6 +92,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(value = BookNotFoundException.class)
+    protected ResponseEntity<Object> handleBookNotFoundException(
+            NoShoppingCartException ex,
+            WebRequest request
+    ) {
+        return handleExceptionInternal(ex, getBody(HttpStatus.NOT_FOUND, ex.getMessage()),
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
     private Map<String, Object> getBody(HttpStatus status, String message) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(TIMESTAMP, LocalDateTime.now());
