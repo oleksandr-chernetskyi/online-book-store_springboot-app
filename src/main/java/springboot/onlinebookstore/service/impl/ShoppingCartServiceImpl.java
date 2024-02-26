@@ -9,6 +9,7 @@ import springboot.onlinebookstore.dto.cartitem.CartItemResponseDto;
 import springboot.onlinebookstore.dto.shoppingcart.ShoppingCartResponseDto;
 import springboot.onlinebookstore.exception.BookNotFoundException;
 import springboot.onlinebookstore.exception.NoShoppingCartException;
+import springboot.onlinebookstore.mapper.cartitem.CartItemMapper;
 import springboot.onlinebookstore.model.Book;
 import springboot.onlinebookstore.model.CartItem;
 import springboot.onlinebookstore.model.ShoppingCart;
@@ -27,6 +28,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final UserService userService;
     private final CartItemRepository cartItemRepository;
     private final BookRepository bookRepository;
+    private final CartItemMapper cartItemMapper;
 
     @Override
     public CartItemResponseDto addCartItem(CartItemRequestDto cartItemRequestDto) {
@@ -75,11 +77,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     private CartItemResponseDto mapToCartItemResponseDto(CartItem cartItem) {
-        CartItemResponseDto cartItemResponseDto = new CartItemResponseDto();
-        cartItemResponseDto.setId(cartItem.getId());
-        cartItemResponseDto.setBookId(cartItem.getBook().getId());
-        cartItemResponseDto.setBookTitle(cartItem.getBook().getTitle());
-        cartItemResponseDto.setQuantity(cartItem.getQuantity());
-        return cartItemResponseDto;
+        return cartItemMapper.toDto(cartItem);
     }
 }

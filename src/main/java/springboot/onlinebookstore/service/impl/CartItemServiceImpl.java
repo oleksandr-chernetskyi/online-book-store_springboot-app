@@ -32,7 +32,7 @@ public class CartItemServiceImpl implements CartItemService {
     private final CartItemMapper cartItemMapper;
 
     @Override
-    public CartItemResponseDto save(CartItemRequestDto cartItemRequestDto) {
+    public CartItemResponseDto addItemToShoppingCart(CartItemRequestDto cartItemRequestDto) {
         CartItem cartItem = new CartItem();
         cartItem.setBook(bookRepository.getById(cartItemRequestDto.getBookId()));
         cartItem.setQuantity(cartItemRequestDto.getQuantity());

@@ -6,7 +6,7 @@ import springboot.onlinebookstore.dto.cartitem.CartItemResponseDto;
 import springboot.onlinebookstore.dto.cartitem.CountQuantityDto;
 
 public interface CartItemService {
-    CartItemResponseDto save(CartItemRequestDto cartItemRequestDto);
+    CartItemResponseDto addItemToShoppingCart(CartItemRequestDto cartItemRequestDto);
 
     Set<CartItemResponseDto> findItemsByShoppingCartId(Long id);
 
