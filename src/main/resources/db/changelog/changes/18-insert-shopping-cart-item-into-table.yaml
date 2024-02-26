@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-shopping-cart-item-into-table
+      author: onlinebookstore
+      changes:
+        - insert:
+            tableName: shopping_cart_items
+            columns:
+              - column:
+                  name: "shopping_carts_id"
+                  value: "1"
+              - column:
+                  name: "cart_items_id"
+                  value: "1"
+        - insert:
+            tableName: shopping_cart_items
+            columns:
+              - column:
+                  name: "shopping_carts_id"
+                  value: "2"
+              - column:
+                  name: "cart_items_id"
+                  value: "2"
+        - insert:
+            tableName: shopping_cart_items
+            columns:
+              - column:
+                  name: "shopping_carts_id"
+                  value: "1"
+              - column:
+                  name: "cart_items_id"
+                  value: "3"
