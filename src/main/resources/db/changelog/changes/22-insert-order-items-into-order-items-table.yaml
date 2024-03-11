@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-order-items-into-order-items-table
+      author: onlinebookstore
+      changes:
+        - insert:
+            tableName: "order_items"
+            columns:
+              - column:
+                  name: "order_id"
+                  value: "1"
+              - column:
+                  name: "book_id"
+                  value: "1"
+              - column:
+                  name: "quantity"
+                  value: "2"
+              - column:
+                  name: "price"
+                  value: "50"
+        - insert:
+            tableName: "order_items"
+            columns:
+              - column:
+                  name: "order_id"
+                  value: "1"
+              - column:
+                  name: "book_id"
+                  value: "3"
+              - column:
+                  name: "quantity"
+                  value: "1"
+              - column:
+                  name: "price"
+                  value: "45"
+        - insert:
+            tableName: "order_items"
+            columns:
+              - column:
+                  name: "order_id"
+                  value: "2"
+              - column:
+                  name: "book_id"
+                  value: "2"
+              - column:
+                  name: "quantity"
+                  value: "2"
+              - column:
+                  name: "price"
+                  value: "30"

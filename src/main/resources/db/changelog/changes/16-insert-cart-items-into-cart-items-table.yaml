@@ -10,7 +10,7 @@ databaseChangeLog:
                   name: "shopping_carts_id"
                   value: "1"
               - column:
-                  name: "books_id"
+                  name: "book_id"
                   value: "1"
               - column:
                   name: "quantity"
@@ -22,7 +22,7 @@ databaseChangeLog:
                   name: "shopping_carts_id"
                   value: "2"
               - column:
-                  name: "books_id"
+                  name: "book_id"
                   value: "2"
               - column:
                   name: "quantity"
@@ -34,7 +34,7 @@ databaseChangeLog:
                   name: "shopping_carts_id"
                   value: "1"
               - column:
-                  name: "books_id"
+                  name: "book_id"
                   value: "3"
               - column:
                   name: "quantity"

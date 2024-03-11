@@ -1,4 +1,4 @@
-package springboot.onlinebookstore.validation;
+package springboot.onlinebookstore.validation.status;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -9,17 +9,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = FieldMatchValidator.class)
-@Target({ElementType.FIELD, ElementType.TYPE})
+@Constraint(validatedBy = StatusValidator.class)
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldMatch {
-    String message() default "Fields values don't match!";
-
-    String field();
-
-    String fieldMatch();
-
+public @interface Status {
+    String message() default "Invalid status";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
+    Class<? extends Enum<?>> enumClass();
 }

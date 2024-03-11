@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import springboot.onlinebookstore.validation.Isbn;
+import springboot.onlinebookstore.validation.isbn.Isbn;
 
 @Data
 public class CreateBookRequestDto {

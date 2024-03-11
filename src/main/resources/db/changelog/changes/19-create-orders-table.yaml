@@ -1,37 +1,44 @@
 databaseChangeLog:
   - changeSet:
-      id: create-cart-items-table
+      id: create-orders-table
       author: onlinebookstore
       changes:
         - createTable:
-            tableName: cart_items
+            tableName: orders
             columns:
               - column:
-                  name: id
-                  type: bigint
+                  name:  id
+                  type:  bigint
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: shopping_carts_id
+                  name: user_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_cart_items_shopping_carts
-                    referencedTableName: shopping_carts
+                    foreignKeyName: fk_orders_users
+                    referencedTableName: users
                     referencedColumnNames: id
                     nullable: false
               - column:
-                  name: book_id
-                  type: bigint
+                  name: status
+                  type: varchar(255)
                   constraints:
-                    foreignKeyName: fk_cart_items_books
-                    referencedTableName: books
-                    referencedColumnNames: id
                     nullable: false
               - column:
-                  name: quantity
-                  type: integer
+                  name: total
+                  type: decimal
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipping_address
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
