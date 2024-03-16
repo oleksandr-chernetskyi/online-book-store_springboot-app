@@ -40,25 +40,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto createOrder(Long id, OrderRequestDto orderRequestDto) {
-        User authenticatedUser = userService.getAuthenticatedUser();
-        ShoppingCart shoppingCart = shoppingCartRepository
-                .getUserById(authenticatedUser.getId())
-                .orElseThrow(() -> {
-                    log.error("Create order method failed. "
-                            + "Can't find shopping cart by user ID: {}",
-                            authenticatedUser.getId());
-                    throw new NoShoppingCartException("Shopping cart not found by user");
-                });
-        Order order = new Order();
-        order.setUser(shoppingCart.getUser());
-        order.setTotal(BigDecimal.ZERO);
-        order.setShippingAddress(orderRequestDto.getShippingAddress());
-        order.setStatus(Order.Status.NEW);
-        Set<OrderItem> orderItems = getOrderItemsFromShoppingCart(shoppingCart, order);
-        order.setOrderItems(orderItems);
-        order.setOrderDate(LocalDateTime.now());
-        BigDecimal totalPrice = calculateTotalPrice(orderItems);
-        order.setTotal(totalPrice);
+        ShoppingCart shoppingCart = getShoppingCartForAuthenticatedUser();
+        Order order = createOrderFromCart(shoppingCart, orderRequestDto);
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -66,15 +49,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponseDto> findAllOrdersByUserId(Long userId, Pageable pageable) {
         List<Order> orders = orderRepository.findAllOrdersByUserId(userId);
         return orders.stream()
-                .map(order -> {
-                    OrderResponseDto orderResponseDto = orderMapper.toDto(order);
-                    Set<OrderItemResponseDto> orderItemResponseDtos
-                            = order.getOrderItems().stream()
-                            .map(orderItemMapper::toDto)
-                            .collect(Collectors.toSet());
-                    orderResponseDto.setOrderItems(orderItemResponseDtos);
-                    return orderResponseDto;
-                })
+                .map(this::mapOrderToOrderResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -96,9 +71,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> {
                     log.error("Find order item method failed. "
-                                    + "Can't find order by ID: {}",
-                            orderId);
-                    throw new EntityNotFoundException("Can't find order by existing ID");
+                                    + "Can't find order by ID: {}{}",
+                            orderId, itemId);
+                    throw new EntityNotFoundException("Can't find order or item by provided IDs");
                 });
         return order.getOrderItems().stream()
                 .filter(o -> o.getId().equals(itemId))
@@ -122,7 +97,33 @@ public class OrderServiceImpl implements OrderService {
                 });
         order.setStatus(orderStatusUpdateDto.getStatus());
         Order savedOrder = orderRepository.save(order);
-        return orderMapper.toDto(savedOrder);
+        return mapOrderToOrderResponseDto(savedOrder);
+    }
+
+    private ShoppingCart getShoppingCartForAuthenticatedUser() {
+        User authenticatedUser = userService.getAuthenticatedUser();
+        return shoppingCartRepository.getUserById(authenticatedUser.getId())
+                .orElseThrow(() -> {
+                    log.error("Create order method failed. "
+                                    + "Can't find shopping cart by user ID: {}",
+                            authenticatedUser.getId());
+                    throw new NoShoppingCartException("Shopping cart not found by user");
+                });
+    }
+
+    private Order createOrderFromCart(ShoppingCart shoppingCart,
+            OrderRequestDto orderRequestDto) {
+        Order order = new Order();
+        order.setUser(shoppingCart.getUser());
+        order.setTotal(BigDecimal.ZERO);
+        order.setShippingAddress(orderRequestDto.getShippingAddress());
+        order.setStatus(Order.Status.NEW);
+        Set<OrderItem> orderItems = getOrderItemsFromShoppingCart(shoppingCart, order);
+        order.setOrderItems(orderItems);
+        order.setOrderDate(LocalDateTime.now());
+        BigDecimal totalPrice = calculateTotalPrice(orderItems);
+        order.setTotal(totalPrice);
+        return order;
     }
 
     private Set<OrderItem> getOrderItemsFromShoppingCart(ShoppingCart shoppingCart, Order order) {
@@ -142,5 +143,15 @@ public class OrderServiceImpl implements OrderService {
         return orderItems.stream()
                 .map(OrderItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private OrderResponseDto mapOrderToOrderResponseDto(Order order) {
+        OrderResponseDto orderResponseDto = orderMapper.toDto(order);
+        Set<OrderItemResponseDto> orderItemResponseDtos
+                = order.getOrderItems().stream()
+                .map(orderItemMapper::toDto)
+                .collect(Collectors.toSet());
+        orderResponseDto.setOrderItems(orderItemResponseDtos);
+        return orderResponseDto;
     }
 }

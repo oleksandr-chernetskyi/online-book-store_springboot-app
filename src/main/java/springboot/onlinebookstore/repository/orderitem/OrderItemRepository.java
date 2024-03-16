@@ -5,3 +5,4 @@ import springboot.onlinebookstore.model.OrderItem;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }
+
