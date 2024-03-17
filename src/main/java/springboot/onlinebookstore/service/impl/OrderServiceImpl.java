@@ -115,7 +115,6 @@ public class OrderServiceImpl implements OrderService {
             OrderRequestDto orderRequestDto) {
         Order order = new Order();
         order.setUser(shoppingCart.getUser());
-        order.setTotal(BigDecimal.ZERO);
         order.setShippingAddress(orderRequestDto.getShippingAddress());
         order.setStatus(Order.Status.NEW);
         Set<OrderItem> orderItems = getOrderItemsFromShoppingCart(shoppingCart, order);
