@@ -1,4 +1,4 @@
-package springboot.onlinebookstore.validation;
+package springboot.onlinebookstore.validation.password;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
