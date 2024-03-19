@@ -1,37 +1,42 @@
 databaseChangeLog:
   - changeSet:
-      id: create-cart-items-table
+      id: create-order-items-table
       author: onlinebookstore
       changes:
         - createTable:
-            tableName: cart_items
+            tableName: order_items
             columns:
               - column:
-                  name: id
-                  type: bigint
+                  name:  id
+                  type:  bigint
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: shopping_carts_id
+                  name: order_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_cart_items_shopping_carts
-                    referencedTableName: shopping_carts
+                    foreignKeyName: fk_order_items_order_id
+                    referencedTableName: orders
                     referencedColumnNames: id
                     nullable: false
               - column:
                   name: book_id
                   type: bigint
                   constraints:
-                    foreignKeyName: fk_cart_items_books
+                    foreignKeyName: fk_order_items_book_id
                     referencedTableName: books
                     referencedColumnNames: id
                     nullable: false
               - column:
                   name: quantity
-                  type: integer
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal
                   constraints:
                     nullable: false
               - column:
@@ -40,3 +45,9 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  defaultValue: "NEW"
+                  constraints:
+                    nullable: true
